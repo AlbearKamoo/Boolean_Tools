@@ -125,62 +125,6 @@ def _calculate(Logic_dict: dict, variable_list: [str], expression: str, c: int =
             n+= 1
         return result_list
 
-##def _rowify(row_size, value_list: [int]) -> [[int]]:
-##    ''' Converts a bigger list of values into a a list of smaller lists.
-##    Makes the results of _calculate easier to parse for the the display fucntion '''
-##    new_list = []
-##    for i in range(pow(2, row_size-1)):
-##        new_list.append(value_list[row_size*i:row_size*(i+1)])
-##    return new_list
-##
-##def _parse_expression(expression: str, variable_list: [str]) -> str:
-##    ''' Replaces the string characters in the expression with dictionary references '''
-##    for i in variable_list:
-##        expression = expression.replace(i, "Logic_dict['"+i+"']")
-##    return expression
-##
-##def _evaluate(expression: str) -> [list]:
-##    ''' Condenses the evaluation process of a logical expression
-##    Returns all the expression's possible values '''
-##    Logic_dict = _extract_objects(expression)
-##    variable_list = sorted(list(Logic_dict.keys()))
-##    return _calculate(Logic_dict, variable_list, _parse_expression(expression, variable_list))
-##
-##def _print_header(variable_list: [str], expression: str) -> None:
-##    ''' Prints out the initial header for the truth table '''
-##    header_str = ""
-##    for i in variable_list:
-##        header_str += "  "+i+"  |"
-##    header_str += "  " + expression
-##    print(header_str)
-##    print("-"*len(header_str))
-##
-##def _display_truth_table(value_list: [[int]]) -> None:
-##    ''' Display the list of values calculated from evaluate in a readable truth table format '''
-##    for row in value_list:
-##        row_str = ""
-##        for i in range(len(row) - 1):
-##            row_str += "  "+str(row[i])+"  |"
-##        row_str += "  "+ str(row[-1])
-##        print(row_str)
-##
-##def truth_table(expression: str) -> None:
-##    ''' Prints out the truth table for a given logical expression '''
-##    try:
-##        Logic_dict = _extract_objects(expression)
-##        variable_list = sorted(list(Logic_dict.keys()))
-##        values = _calculate(Logic_dict, variable_list, _parse_expression(expression, variable_list))
-##        _print_header(variable_list, expression)
-##        _display_truth_table(_rowify(len(variable_list) +1, values))
-##    except Exception as e:
-##        print("ERROR")
-##        print(e)
-##
-##def equivalence(expression1, expression2) -> bool:
-##    if _extract_objects(expression1) == _extract_objects(expression2):
-##        return _evaluate(expression1) == _evaluate(expression2)
-##    else:
-##        return False
 
 def print_operators() -> None:
     ''' Prints out a list of supported operators '''
