@@ -121,6 +121,4 @@ def _display_truth_table(value_list: [[int]]) -> None:
         print(row_str)
 
 Logic_class.print_operators()
-l = Logic_function("x*y*z")
-for x in l.maxterms():
-    print(x)
+
