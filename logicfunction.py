@@ -1,25 +1,40 @@
 from collections import defaultdict
-import Logic_class
+import logic
 
 
-class Logic_function:
+class LogicFunction:
     def __init__(self, expression):
-        self.expression = expression
-        self.logic_dict = _extract_objects(expression)
-        self.variable_list = sorted(list(self.logic_dict))
-        self.parsed_expression = _parse_expression(expression, self.variable_list)
-        self.values = _rowify(len(self.variable_list) +1, self._calculate())
+        if isinstance(expression, str):
+            self.expression = expression
+            self.logic_dict = _extract_objects(expression)
+            self.variable_list = sorted(list(self.logic_dict))
+            self.parsed_expression = _parse_expression(expression, self.variable_list)
+            self.values = _rowify(len(self.variable_list) +1, self.calculate())
+        else:
+            raise TypeError("LogicFunction class must be initialized with string value")
 
+    def __str__(self):
+        ''' Defines string representaiton of a LogicFunction object '''
+        return self.expression
+        
     def __eq__(self, right):
-        ''' Defines equality operator for Logic_function objects. Returns true if both functions
-        have the same output values. '''
+        ''' Defines equality operator for LogicFunction objects. Returns true if both functions
+        have the same output values for all inputs. '''
         if isinstance(right, Logic_function):
             if self.logic_dict == right.logic_dict:
-                return self._calculate() == right._calculate()
+                return self.calculate() == right.calculate()
             else:
                 return False
-
-    def _calculate(self, c = 0):
+    def _print_header(self):
+        ''' Prints out the initial header for the truth table '''
+        header_str = ""
+        for i in self.variable_list:
+            header_str += "  "+i+"  |"
+        header_str += "  " + self.expression
+        print(header_str)
+        print("-"*len(header_str))
+        
+    def calculate(self, c = 0):
         ''' Eavaluates the function for all possible variable values and returns
         a list with all the input/output combinations'''
         result_list = []
@@ -32,19 +47,10 @@ class Logic_function:
         else:
             n = 0
             while n != 2:
-                self.logic_dict[self.variable_list[c]] = Logic_class.Logic(n)
-                result_list.extend(self._calculate(c+1))
+                self.logic_dict[self.variable_list[c]] = logic.Logic(n)
+                result_list.extend(self.calculate(c+1))
                 n+= 1
-            return result_list
-
-    def _print_header(self):
-        ''' Prints out the initial header for the truth table '''
-        header_str = ""
-        for i in self.variable_list:
-            header_str += "  "+i+"  |"
-        header_str += "  " + self.expression
-        print(header_str)
-        print("-"*len(header_str))
+            return result_list  
 
     def truth_table(self):
         ''' Prints out the truth table of a logical function in a nice, readable format '''
@@ -102,7 +108,7 @@ def _extract_objects(expression: str) -> dict:
     object_dict = defaultdict(str)
     for i in expression:
         if i.isalpha():
-            object_dict[i] = Logic_class.Logic()
+            object_dict[i] = logic.Logic()
     return object_dict
 
 def _parse_expression(expression: str, variable_list: [str]) -> str:
@@ -120,5 +126,6 @@ def _display_truth_table(value_list: [[int]]) -> None:
         row_str += "  "+ str(row[-1])
         print(row_str)
 
-Logic_class.print_operators()
+if __name__ == "__main__":
+    logic.print_operators()
 

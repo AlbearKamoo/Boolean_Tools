@@ -9,15 +9,6 @@ class Logic:
         else:
             raise TypeError("Logic class must be initialized with bool or int value")
 
-    def __eq__(self, right):
-        ''' Defines equality operator for operations between Logic objects and boolean values '''
-        if type(right) == bool:
-            return self.value == right
-        elif isinstance(right, Logic):
-            return self.value == right.value
-        else:
-            return False
-
     def __bool__(self):
         ''' Defines boolean representation of a Logic object '''
         return self.value
@@ -29,6 +20,15 @@ class Logic:
     def __int__(self):
         ''' Defines integer representation of a Logic object '''
         return int(self.value)
+
+    def __eq__(self, right):
+        ''' Defines equality operator for operations between Logic objects and boolean values '''
+        if type(right) == bool:
+            return self.value == right
+        elif isinstance(right, Logic):
+            return self.value == right.value
+        else:
+            return False
 
     def __invert__(self):
         ''' Defines the complement(negation) operator for Logic objects '''
