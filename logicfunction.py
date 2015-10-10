@@ -9,7 +9,7 @@ class LogicFunction:
             self.logic_dict = _extract_objects(expression)
             self.variable_list = sorted(list(self.logic_dict))
             self.parsed_expression = _parse_expression(expression, self.variable_list)
-            self.values = _rowify(len(self.variable_list) +1, self.calculate())
+            self.values = self.solve()
         else:
             raise TypeError("LogicFunction class must be initialized with string value")
 
@@ -22,7 +22,7 @@ class LogicFunction:
         have the same output values for all inputs. '''
         if isinstance(right, Logic_function):
             if self.logic_dict == right.logic_dict:
-                return self.calculate() == right.calculate()
+                return self._calculate() == right._calculate()
             else:
                 return False
     def _print_header(self):
@@ -33,8 +33,8 @@ class LogicFunction:
         header_str += "  " + self.expression
         print(header_str)
         print("-"*len(header_str))
-        
-    def calculate(self, c = 0):
+    
+    def _calculate(self, c = 0):
         ''' Eavaluates the function for all possible variable values and returns
         a list with all the input/output combinations'''
         result_list = []
@@ -48,9 +48,16 @@ class LogicFunction:
             n = 0
             while n != 2:
                 self.logic_dict[self.variable_list[c]] = logic.Logic(n)
-                result_list.extend(self.calculate(c+1))
+                result_list.extend(self._calculate(c+1))
                 n+= 1
             return result_list  
+
+    def solve(self):
+        ''' Streamlines the calculating and formatting of results so it can be easily accessed by other modules '''
+        raw_results = self._calculate()
+        new_results = _rowify(len(self.variable_list)+1, raw_results)
+
+        return new_results
 
     def truth_table(self):
         ''' Prints out the truth table of a logical function in a nice, readable format '''
