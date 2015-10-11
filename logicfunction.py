@@ -69,8 +69,9 @@ class LogicFunction:
         _display_truth_table(self.values)
 
     def maxterms(self):
-        ''' Returns a lits of the maxterms for a logical function. '''
+        ''' Returns a lits of the maxterms and their indexes for a logical function. '''
         maxterms = []
+        index = 0
         for i in self.values:
             if i[-1] == 0:
                 term = '('
@@ -79,12 +80,14 @@ class LogicFunction:
                         term += str(self.variable_list[j]) + " + "
                     else:
                         term += "~"+str(self.variable_list[j]) + " + "
-                maxterms.append(term[:-3] + ")")
+                maxterms.append([index, term[:-3] + ")"])
+            index += 1
         return maxterms
 
     def minterms(self):
-        ''' Returns a list of the minterms for a logical function. '''
+        ''' Returns a list of the minterms and their indexes for a logical function. '''
         minterms = []
+        index = 0
         for i in self.values:
             if i[-1] == 1:
                 term = '('
@@ -93,7 +96,8 @@ class LogicFunction:
                         term += str(self.variable_list[j])
                     else:
                         term += "~"+str(self.variable_list[j])
-                minterms.append(term + ")")
+                minterms.append([index,term + ")"])
+            index += 1
         return minterms
         
 
