@@ -67,14 +67,13 @@ class Main(QWidget):
 class TableWindow(QWidget):
      def __init__(self, function):
           super().__init__()
-
-          # Might serve as display window for minterm and maxterm information as well
-          # Maybe I'll try both cases and see what is best.
           
           function_output = function.solve()
           rows = len(function_output)
           columns = len(function_output[0])
-          variables = function.get_variables()
+          self.variables = function.get_variables()
+          self.minterms = function.minterms()
+          self.maxterms = function.maxterms()
 
           self.setWindowTitle("Truth Table")
           grid = QGridLayout()
@@ -84,9 +83,9 @@ class TableWindow(QWidget):
           truth_table.setRowCount(rows)
           truth_table.setColumnCount(columns)
 
-          for v in variables:
-               truth_table.setHorizontalHeaderItem(variables.index(v), QTableWidgetItem(v))
-          truth_table.setHorizontalHeaderItem(len(variables), QTableWidgetItem(str(function)))
+          for v in self.variables:
+               truth_table.setHorizontalHeaderItem(self.variables.index(v), QTableWidgetItem(v))
+          truth_table.setHorizontalHeaderItem(len(self.variables), QTableWidgetItem(str(function)))
 
           for i in range(0,len(function_output)):
                truth_table.setVerticalHeaderItem(i, QTableWidgetItem(str(i)))
@@ -106,14 +105,50 @@ class TableWindow(QWidget):
           #Makes table stretch when window is resized
           truth_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
           truth_table.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+     
+          minterm_title = QLabel("Sum-of-minterms(CDNF): ")
+          minterm_label = QLabel(self.get_minterm_string())
 
-
-          # Testing label interaction with table in window
-          test_label = QLabel("Testing! f(x,y) = m1 + m2 = ~xy + x~y ")
+          maxterm_title = QLabel("Product-of-maxterms(CCNF): ")
+          maxterm_label = QLabel(self.get_maxterm_string())
           
           grid.addWidget(truth_table, 0, 0)
-          grid.addWidget(test_label, 1, 0)
-          self.resize(50 + 75*columns, 60 + 40*rows)
+          grid.addWidget(minterm_title, 1, 0)
+          grid.addWidget(minterm_label, 2, 0)
+          grid.addWidget(maxterm_title, 3, 0)
+          grid.addWidget(maxterm_label, 4, 0)
+          self.resize(50 + 75*columns, 120 + 40*rows)
+
+     def get_minterm_string(self):
+          minterm_string = 'f('
+          for v in self.variables:
+               minterm_string += str(v) + ','
+          minterm_string = minterm_string[:-1] + ') = '
+
+          for pair in self.minterms:
+               minterm_string += 'm' + str(pair[0]) + ' + '
+          minterm_string = minterm_string[:-3] + ' = '
+
+          for pair in self.minterms:
+               minterm_string += str(pair[1]) + ' + '
+          minterm_string = minterm_string[:-3]
+
+          return minterm_string
+
+     def get_maxterm_string(self):
+          maxterm_string = 'f('
+          for v in self.variables:
+               maxterm_string += str(v) + ','
+          maxterm_string = maxterm_string[:-1] + ') = '
+
+          for pair in self.maxterms:
+               maxterm_string += 'M' + str(pair[0]) + '*'
+          maxterm_string = maxterm_string[:-1] + ' = '
+
+          for pair in self.maxterms:
+               maxterm_string += str(pair[1]) 
+
+          return maxterm_string
           
 
 if __name__ == '__main__':

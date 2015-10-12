@@ -128,9 +128,16 @@ def _extract_objects(expression: str) -> dict:
 
 def _parse_expression(expression: str, variable_list: [str]) -> str:
     ''' Replaces the string characters in the expression with dictionary references. '''
-    for i in variable_list:
-        expression = expression.replace(i, "self.logic_dict['"+i+"']")
-    return expression
+    print(variable_list)
+    parsed_expression = ''
+    for c in expression:
+        if c in variable_list:
+            parsed_expression += "self.logic_dict['"+c+"']"
+        else:
+            parsed_expression += c
+        
+    print(parsed_expression)
+    return parsed_expression
 
 def _display_truth_table(value_list: [[int]]) -> None:
     ''' Displays the list of values calculated from _calculate in a readable truth table format. '''
