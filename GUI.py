@@ -29,24 +29,17 @@ class Main(QWidget):
     <= : <-> biconditional (if and only if)
     """)          
           truth_table_button = QPushButton("Truth Table")
-          minterms_button = QPushButton("Minterms")
-          maxterms_button = QPushButton("Maxterms")
 
           # Button events
           truth_table_button.clicked.connect(self.create_truth_table)
-
-          # TODO: figure out if it is best to place minterms and maxterms information in
-          # same window as the truth table or in separate windows
           
+          # Add widgets to grid
           grid.addWidget(truth_table_button, 1, 1, 1, 3)
-          #grid.addWidget(minterms_button, 1, 2)
-          #grid.addWidget(maxterms_button, 1, 3)
-          
           grid.addWidget(function_label, 0, 0)
           grid.addWidget(self.function_input, 0, 1, 1, 3)
-
           grid.addWidget(instructions, 2, 0, 2, 2)
 
+          # Set window properties
           self.setWindowTitle("Boolean Tools")
           self.setGeometry(300, 300, 400, 200)
           

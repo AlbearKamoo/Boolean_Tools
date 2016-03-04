@@ -25,6 +25,7 @@ class LogicFunction:
                 return self._calculate() == right._calculate()
             else:
                 return False
+            
     def _print_header(self):
         ''' Prints out the initial header for the truth table. '''
         header_str = ""
@@ -128,7 +129,6 @@ def _extract_objects(expression: str) -> dict:
 
 def _parse_expression(expression: str, variable_list: [str]) -> str:
     ''' Replaces the string characters in the expression with dictionary references. '''
-    print(variable_list)
     parsed_expression = ''
     for c in expression:
         if c in variable_list:
@@ -136,7 +136,6 @@ def _parse_expression(expression: str, variable_list: [str]) -> str:
         else:
             parsed_expression += c
         
-    print(parsed_expression)
     return parsed_expression
 
 def _display_truth_table(value_list: [[int]]) -> None:
